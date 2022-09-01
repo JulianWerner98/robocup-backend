@@ -23,14 +23,11 @@ export class PhotoControllerV1 {
 
     @Get()
     async getPhotoListFromMember(@Param() params: FindMemberParamDto): Promise<GridFSFile[]> {
-        this.logger.log(params.id);
         return this.photoService.findPhotosFromMember(params.id);
     }
 
     @Get(':pid')
     async getPhoto(@Param() params: FindPhotoParamsDto, @Res() res: Response) {
-        this.logger.log("ID" + params.id);
-        this.logger.log("PID" + params.pid);
         const file = await this.photoService.findPhoto(params.id, params.pid);
         return file.pipe(res);
     }
