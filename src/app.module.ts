@@ -3,6 +3,9 @@ import {ConfigModule, ConfigService} from "@nestjs/config";
 import {validationSchema} from "./config";
 import {MongooseModule} from "@nestjs/mongoose";
 import {KeycloakConnectModule} from "nest-keycloak-connect";
+import {MemberModule} from "./member";
+import {Connection, connections} from "mongoose";
+import * as toJson from '@meanie/mongoose-to-json'
 
 @Module({
     imports: [
@@ -18,6 +21,9 @@ import {KeycloakConnectModule} from "nest-keycloak-connect";
         MongooseModule.forRootAsync({
             useFactory: async (configService: ConfigService) => ({
                 uri: configService.get<string>('MONGO_URI'),
+                connectionFactory: (connection: Connection) => {
+                    return connection.plugin(toJson);
+                },
             }),
             inject: [ConfigService]
         }),
@@ -30,6 +36,7 @@ import {KeycloakConnectModule} from "nest-keycloak-connect";
             }),
             inject: [ConfigService]
         }),
+        MemberModule
     ],
 })
 
