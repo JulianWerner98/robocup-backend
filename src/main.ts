@@ -6,7 +6,7 @@ import {Logger, ValidationPipe, VersioningType} from "@nestjs/common";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  //app.enableCors();
+  app.enableCors(); //TODO Sicherheitslücke?
   const port = app.get(ConfigService).get<number>('PORT')
 
   app.enableVersioning({type: VersioningType.URI})

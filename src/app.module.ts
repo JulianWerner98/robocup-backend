@@ -2,10 +2,11 @@ import {Module} from '@nestjs/common';
 import {ConfigModule, ConfigService} from "@nestjs/config";
 import {validationSchema} from "./config";
 import {MongooseModule} from "@nestjs/mongoose";
-import {KeycloakConnectModule} from "nest-keycloak-connect";
+import {AuthGuard, KeycloakConnectModule, RoleGuard} from "nest-keycloak-connect";
 import {MemberModule} from "./member";
 import {Connection, connections} from "mongoose";
 import * as toJson from '@meanie/mongoose-to-json'
+import {APP_GUARD} from "@nestjs/core";
 
 @Module({
     imports: [
@@ -38,6 +39,16 @@ import * as toJson from '@meanie/mongoose-to-json'
         }),
         MemberModule
     ],
+    providers: [
+        {
+            provide: APP_GUARD,
+            useClass: AuthGuard,
+        },
+        {
+            provide: APP_GUARD,
+            useClass: RoleGuard
+        }
+    ]
 })
 
 export class AppModule {
