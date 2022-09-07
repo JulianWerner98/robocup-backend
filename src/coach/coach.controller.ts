@@ -1,4 +1,11 @@
-import { Controller } from '@nestjs/common';
+import {Controller} from '@nestjs/common';
+import {CoachService} from "./coach.service";
 
-@Controller('coach')
-export class CoachController {}
+@Controller({
+    version: '1',
+    path: 'coach'
+})
+export class CoachController {
+    constructor(private coachService: CoachService) {
+    }
+}
