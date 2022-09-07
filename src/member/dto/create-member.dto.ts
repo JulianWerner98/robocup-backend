@@ -1,4 +1,4 @@
-import {IsIn, IsNotEmpty, IsOptional, IsString} from "class-validator";
+import {IsDateString, IsIn, IsNotEmpty, IsOptional, IsString} from "class-validator";
 
 export class CreateMemberDto {
 
@@ -10,9 +10,10 @@ export class CreateMemberDto {
     @IsNotEmpty()
     firstname: string;
 
+    @IsOptional()
+    @IsDateString()
     birth: Date;
 
-    @IsOptional()
-    @IsIn(['male','female','diverse'])
+    @IsIn(['Männlich','Weiblich','Diverse'])
     gender?: string;
 }

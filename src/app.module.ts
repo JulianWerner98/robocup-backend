@@ -7,6 +7,12 @@ import {MemberModule} from "./member";
 import {Connection, connections} from "mongoose";
 import * as toJson from '@meanie/mongoose-to-json'
 import {APP_GUARD} from "@nestjs/core";
+import { TeamModule } from './team/team.module';
+import { DisciplineModule } from './discipline/discipline.module';
+import { LeagueModule } from './league/league.module';
+import { CoachModule } from './coach/coach.module';
+import { LocationModule } from './location/location.module';
+import { SchoolModule } from './school/school.module';
 
 @Module({
     imports: [
@@ -37,7 +43,13 @@ import {APP_GUARD} from "@nestjs/core";
             }),
             inject: [ConfigService]
         }),
-        MemberModule
+        MemberModule,
+        TeamModule,
+        DisciplineModule,
+        LeagueModule,
+        CoachModule,
+        LocationModule,
+        SchoolModule
     ],
     providers: [
         {
@@ -48,7 +60,8 @@ import {APP_GUARD} from "@nestjs/core";
             provide: APP_GUARD,
             useClass: RoleGuard
         }
-    ]
+    ],
+    controllers: []
 })
 
 export class AppModule {

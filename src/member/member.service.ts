@@ -1,9 +1,8 @@
-import {Get, Injectable, NotFoundException} from "@nestjs/common";
-import {CreateMemberDto, UpdateTravelDto} from "./dto";
+import {Injectable, NotFoundException} from "@nestjs/common";
+import {CreateMemberDto, UpdateMemberDto} from "./dto";
 import {InjectModel} from "@nestjs/mongoose";
 import {Member, MemberDocument} from "./member.schema";
 import {Model} from "mongoose";
-import {find} from "rxjs";
 
 @Injectable()
 export class MemberService {
@@ -20,9 +19,7 @@ export class MemberService {
         } else if (user.reeal_access.roles.includes('user')) {
             return this.memberModel.find({createdBy: user.sub}).exec();
         } else {
-            const member = new Member();
-            member.firstname ="No";
-            return [member]
+            return []
         }
     }
 
@@ -34,14 +31,14 @@ export class MemberService {
         return doc;
     }
 
-    async updateOne(id: string, updateTravelDto: UpdateTravelDto): Promise<Member> {
+    async updateOne(id: string, updateTravelDto: UpdateMemberDto): Promise<Member> {
         if (!await this.findOne(id)) {
             throw new NotFoundException();
         }
         return this.memberModel.findOneAndUpdate({_id: id}, updateTravelDto, {new: true});
     }
 
-    async delteOne(id: string): Promise<Member> {
+    async deleteOne(id: string): Promise<Member> {
         if (!await this.findOne(id)) {
             throw new NotFoundException();
         }

@@ -1,10 +1,9 @@
 import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
-import exp from "constants";
-import {Document} from "mongoose";
+import {Document, Schema as SchemaMongoose} from "mongoose";
 
 
 @Schema()
-export class Member{
+export class Member {
     @Prop({required: true})
     lastname: string;
 
@@ -14,11 +13,10 @@ export class Member{
     @Prop()
     birth: Date;
 
-    @Prop( {
-        enum: ['male','female','diverse'],
-        default: 'male',
-    })
+    @Prop()
     gender: string;
+
+    team: { type: SchemaMongoose.Types.ObjectId, ref: 'Team' };
 }
 
 export const MemberSchema = SchemaFactory.createForClass(Member);

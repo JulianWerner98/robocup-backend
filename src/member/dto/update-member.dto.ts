@@ -1,6 +1,6 @@
 import {IsIn, IsNotEmpty, IsOptional, IsString} from "class-validator";
 
-export class UpdateTravelDto{
+export class UpdateMemberDto {
     @IsOptional()
     @IsString()
     @IsNotEmpty()
@@ -15,6 +15,6 @@ export class UpdateTravelDto{
     birth?: Date;
 
     @IsOptional()
-    @IsIn(['male','female','diverse'])
+    @IsIn(['Männlich','Weiblich','Diverse'])
     gender?: string;
 }
