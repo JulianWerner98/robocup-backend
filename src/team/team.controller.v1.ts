@@ -28,6 +28,12 @@ export class TeamControllerV1 {
         return this.teamService.findAll(user);
     }
 
+    @Get(':id')
+    @Roles( {roles: ['realm:admin', 'realm:user']})
+    async getOne(@Param() params: FindMemberParamDto): Promise<Team> {
+        return this.teamService.findOne(params.id);
+    }
+
     @Delete(':id')
     @Roles( {roles: ['realm:admin', 'realm:user']})
     async deleteMember(@Param() params: FindMemberParamDto): Promise<Team> {

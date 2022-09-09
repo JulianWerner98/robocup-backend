@@ -4,7 +4,7 @@ import {Schema as SchemaMongoose} from "mongoose";
 
 @Schema()
 export class Team {
-    @Prop({required: true})
+    @Prop()
     name: string;
 
     @Prop()
@@ -17,7 +17,10 @@ export class Team {
     standort: string;
 
     @Prop({ type: SchemaMongoose.Types.ObjectId })
-    leagueRef: { type: SchemaMongoose.Types.ObjectId, ref: 'School' };
+    league: { type: SchemaMongoose.Types.ObjectId, ref: 'Discipline' };
+
+    @Prop({ type: SchemaMongoose.Types.ObjectId })
+    school: { type: SchemaMongoose.Types.ObjectId, ref: 'School' };
 }
 
 export const TeamSchema = SchemaFactory.createForClass(Team);
