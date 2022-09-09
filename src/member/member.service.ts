@@ -45,4 +45,7 @@ export class MemberService {
         return this.memberModel.findOneAndDelete({_id: id}).exec();
     }
 
+    findTeamMember(id: string) {
+        return this.memberModel.find({team: id}).exec();
+    }
 }

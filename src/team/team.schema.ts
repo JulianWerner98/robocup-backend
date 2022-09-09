@@ -1,4 +1,5 @@
 import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
+import {Schema as SchemaMongoose} from "mongoose";
 
 
 @Schema()
@@ -14,6 +15,9 @@ export class Team {
 
     @Prop()
     standort: string;
+
+    @Prop({ type: SchemaMongoose.Types.ObjectId })
+    leagueRef: { type: SchemaMongoose.Types.ObjectId, ref: 'School' };
 }
 
 export const TeamSchema = SchemaFactory.createForClass(Team);

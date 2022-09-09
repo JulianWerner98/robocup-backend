@@ -1,4 +1,5 @@
 import {IsDateString, IsIn, IsNotEmpty, IsOptional, IsString} from "class-validator";
+import {ObjectId} from "mongodb";
 
 export class CreateMemberDto {
 
@@ -16,4 +17,7 @@ export class CreateMemberDto {
 
     @IsIn(['Männlich','Weiblich','Diverse'])
     gender?: string;
+
+    @IsNotEmpty()
+    team: ObjectId;
 }

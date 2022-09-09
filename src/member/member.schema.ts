@@ -16,6 +16,7 @@ export class Member {
     @Prop()
     gender: string;
 
+    @Prop({ type: SchemaMongoose.Types.ObjectId })
     team: { type: SchemaMongoose.Types.ObjectId, ref: 'Team' };
 }
 
