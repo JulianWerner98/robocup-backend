@@ -25,10 +25,10 @@ jobs:
           node-version: 16
       - name: Build <and Publish>
         run: |
-          docker login -u julianwerner  -p ${{ secrets.DOCKERHUB_TOKEN }}
-          docker build -t julianwerner/robocup-backend .
+          docker login -u ${{ secrets.DOCKERHUB_TOKEN }}  -p ${{ secrets.DOCKERHUB_TOKEN }}
+          docker build -t ${{ secrets.DOCKERHUB_TOKEN }}/robocup-backend .
           echo "Finish building"
-          docker push julianwerner/robocup-backend 
+          docker push ${{ secrets.DOCKERHUB_TOKEN }}/robocup-backend 
             
           
     
