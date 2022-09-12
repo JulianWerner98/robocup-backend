@@ -21,11 +21,19 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
+      - name: Get version
+        id: package-version
+        run: |
+          echo "Reading version from ./package.json"
+          PACKAGE_VERSION=$(cat ./package.json | jq '.version' | tr -d '"')
+          echo ::set-output name=current-version::$PACKAGE_VERSION
         with:
           node-version: 16
       - name: Build <and Publish>
         run: |
-          docker build -t app-backend:lastest .
+          docker login -u julianwerner -p ${{ secrets.DOCKER_PASSWORD }}
+          docker build -t robocup-backend:${{ steps.package-version.outputs.current-version }} .
+          docker push /robocup-backend:${{ steps.package-version.outputs.current-version }}
             
           
     
