@@ -32,8 +32,8 @@ jobs:
       - name: Login to Docker Hub
         uses: docker/login-action@v2
         with:
-          username: ${{ secrets.DOCKERHUB_USERNAME }}
-          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          username: julianwerner
+          password: dckr_pat_1OUT__NJyc3StMSjGR1gQt88Af4
       - name: Build <and Publish>
         run: |
           docker build -t robocup-backend:${{ steps.package-version.outputs.current-version }} .
