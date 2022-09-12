@@ -27,6 +27,7 @@ jobs:
         id: package-version
         run: |
           echo "Reading version from ./package.json"
+          echo ${{ secrets.TEST }}
           PACKAGE_VERSION=$(cat ./package.json | jq '.version' | tr -d '"')
           echo ::set-output name=current-version::$PACKAGE_VERSION
       - name: Build <and Publish>
