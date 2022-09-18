@@ -23,6 +23,7 @@ export class CoachController {
     @Get()
     @Roles( {roles: ['realm:admin', 'realm:user']})
     async getMembers(@AuthenticatedUser() user: any): Promise<Coach[]> {
+        console.log(user);
         return this.coachService.findAll(user);
     }
 
