@@ -6,5 +6,5 @@ export const validationSchema = Joi.object({
    KEYCLOAK_URI: Joi.string().default('https://anmeldung.crashtec.de/auth'),
    KEYCLOAK_REALM: Joi.string().default('RoboCup'),
    KEYCLOAK_CLIENT_ID: Joi.string().default('app-backend'),
-   KEYCLOAK_SECRET: Joi.string().default('secret')
+   KEYCLOAK_SECRET: Joi.string().default('1FiLgbQDy9EDDAzWi0M9wfsdd31uzRwO')
 });
