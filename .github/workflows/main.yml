@@ -19,12 +19,12 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref_name == 'master'
     steps:
-      - uses: mad9000/actions-find-and-replace-string@2
+      - name: Find and Replace
+        uses: jacobtomlinson/gha-find-replace@v2
         with:
           include: 'config.validator.ts'
           find: 'localhost'
           replace: 'mongoDB'
-          regex: false
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
