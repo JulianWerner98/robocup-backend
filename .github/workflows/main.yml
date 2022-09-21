@@ -22,16 +22,16 @@ jobs:
       - name: Find and Replace
         uses: jacobtomlinson/gha-find-replace@v2
         with:
-          include: 'config.validator.ts'
           find: 'localhost'
           replace: 'mongoDB'
+          regex: false
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - name: Build <and Publish>
+      - name: Build and Publish
         run: |
-          docker login -u julianwerner  -p ${{ secrets.DOCKERHUB_TOKEN }}
+          docker login -u julianwerner  --password-stdin < ${{ secrets.DOCKERHUB_TOKEN }}
           docker build -t julianwerner/robocup-backend .
           echo "Finish building"
           docker push julianwerner/robocup-backend 
