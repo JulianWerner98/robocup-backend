@@ -19,11 +19,14 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref_name == 'master'
     steps:
-      - uses: mad9000/actions-find-and-replace-string@2
-        with:
-          source: 'src/config/config.validator.ts'
-          find: 'localhost'
-          replace: 'mongoDB'
+      - name: Change Localhost to Dockerlocation
+            run: |
+              uses: mad9000/actions-find-and-replace-string@2
+              with:
+                source: 'src/config/config.validator.ts'
+                find: 'localhost'
+                replace: 'mongoDB'
+              echo 'src/config/config.validator.ts'
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
