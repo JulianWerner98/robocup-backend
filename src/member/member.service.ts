@@ -16,7 +16,7 @@ export class MemberService {
     async findAll(user: any): Promise<Member[]> {
         if (user.realm_access.roles.includes('admin')) {
             return this.memberModel.find().exec();
-        } else if (user.reeal_access.roles.includes('user')) {
+        } else if (user.realm_access.roles.includes('user')) {
             return this.memberModel.find({createdBy: user.sub}).exec();
         } else {
             return []

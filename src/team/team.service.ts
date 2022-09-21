@@ -24,7 +24,7 @@ export class TeamService {
     findAll(user: any) {
         if (user.realm_access.roles.includes('admin')) {
             return this.teamModel.find().exec();
-        } else if (user.reeal_access.roles.includes('user')) {
+        } else if (user.realm_access.roles.includes('user')) {
             return this.teamModel.find({createdBy: user.sub}).exec();
         } else {
             return []
