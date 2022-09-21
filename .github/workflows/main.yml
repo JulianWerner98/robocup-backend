@@ -21,9 +21,10 @@ jobs:
     steps:
       - uses: mad9000/actions-find-and-replace-string@2
         with:
-          source: '../src/config/config.validator.ts'
+          include: 'config.validator.ts'
           find: 'localhost'
           replace: 'mongoDB'
+          regex: false
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
