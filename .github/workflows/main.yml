@@ -19,16 +19,16 @@ jobs:
     runs-on: ubuntu-latest
     if: github.ref_name == 'master'
     steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
       - name: Find and Replace
         uses: jacobtomlinson/gha-find-replace@v2
         with:
           find: 'mongodb://localhost:27017/robocup'
           replace: 'mongodb://mongoDB:27017/robocup'
           regex: false
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: 16
       - name: Build and Publish
         run: |
           docker login -u julianwerner  --password-stdin <<< ${{ secrets.DOCKERHUB_TOKEN }}
