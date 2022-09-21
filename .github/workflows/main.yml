@@ -22,8 +22,8 @@ jobs:
       - name: Find and Replace
         uses: jacobtomlinson/gha-find-replace@v2
         with:
-          find: 'localhost'
-          replace: 'mongoDB'
+          find: 'mongodb://localhost:27017/robocup'
+          replace: 'mongodb://mongoDB:27017/robocup'
           regex: false
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
