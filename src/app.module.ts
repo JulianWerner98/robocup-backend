@@ -39,7 +39,7 @@ import { SchoolModule } from './school/school.module';
                 authServerUrl: configService.get<string>('KEYCLOAK_URI'),
                 realm: configService.get<string>('KEYCLOAK_REALM'),
                 clientId: configService.get<string>('KEYCLOAK_CLIENT_ID'),
-                secret: "1FiLgbQDy9EDDAzWi0M9wfsdd31uzRwO",
+                secret: configService.get<string>('KEYCLOAK_SECRET'),
             }),
             inject: [ConfigService]
         }),
