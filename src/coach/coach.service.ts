@@ -15,7 +15,6 @@ export class CoachService {
     }
 
     async findAll(user: any): Promise<Coach[]> {
-        console.log(user)
         if (user.realm_access.roles.includes('admin')) {
             return this.coachModel.find().exec();
         } else if (user.realm_access.roles.includes('user')) {
