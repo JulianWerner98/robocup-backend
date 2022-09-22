@@ -18,6 +18,9 @@ export class Member {
 
     @Prop({ type: SchemaMongoose.Types.ObjectId })
     team: { type: SchemaMongoose.Types.ObjectId, ref: 'Team' };
+
+    @Prop()
+    createdBy: string;
 }
 
 export const MemberSchema = SchemaFactory.createForClass(Member);

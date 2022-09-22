@@ -25,6 +25,9 @@ export class School {
 
     @Prop()
     city: string;
+
+    @Prop()
+    createdBy: string;
 }
 
 export const SchoolSchema = SchemaFactory.createForClass(School);
