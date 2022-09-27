@@ -1,4 +1,4 @@
-import {IsIn, IsNotEmpty, IsOptional, IsString} from "class-validator";
+import {IsIn, IsMongoId, IsNotEmpty, IsOptional, IsString} from "class-validator";
 
 export class UpdateTeamDto {
     @IsOptional()
@@ -9,13 +9,13 @@ export class UpdateTeamDto {
     @IsString()
     @IsNotEmpty()
     @IsIn(['Soccer', 'OnStage', 'Rescue'])
-    liga: string;
+    league: string;
 
 
     @IsString()
-    disziplin:string;
+    discipline:string;
 
-    @IsString()
     @IsNotEmpty()
-    standort:string;
+    @IsMongoId()
+    location:string;
 }

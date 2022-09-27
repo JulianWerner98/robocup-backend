@@ -9,6 +9,6 @@ export class LocationService {
     }
 
     findAll(): Promise<any> {
-        return this.locationModel.find().populate('disciplineRef').exec();
+        return this.locationModel.find().exec();
     }
 }

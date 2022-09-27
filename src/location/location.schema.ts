@@ -7,7 +7,12 @@ export class Location {
     name: string;
 
     @Prop()
-    leagueRef: [{ type: SchemaMongoose.Types.ObjectId, ref: 'Discipline' }];
+    available: [
+        {
+            league: string
+            discipline: [string]
+        }
+    ]
 }
 
 export const LocationSchema = SchemaFactory.createForClass(Location);

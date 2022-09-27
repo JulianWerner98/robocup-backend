@@ -8,16 +8,13 @@ export class Team {
     name: string;
 
     @Prop()
-    liga: string;
+    league: string;
 
     @Prop()
-    disziplin: string;
-
-    @Prop()
-    standort: string;
+    discipline: string;
 
     @Prop({ type: SchemaMongoose.Types.ObjectId })
-    league: { type: SchemaMongoose.Types.ObjectId, ref: 'Discipline' };
+    location: { type: SchemaMongoose.Types.ObjectId, ref: 'Location' };
 
     @Prop({ type: SchemaMongoose.Types.ObjectId })
     school: { type: SchemaMongoose.Types.ObjectId, ref: 'School' };

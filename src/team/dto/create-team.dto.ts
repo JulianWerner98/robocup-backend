@@ -1,5 +1,4 @@
-import {IsIn, IsNotEmpty, IsOptional, IsString} from "class-validator";
-import {Member} from "../../member/member.schema";
+import {IsIn, IsMongoId, IsNotEmpty, IsOptional, IsString} from "class-validator";
 import {ObjectId} from "mongodb";
 
 export class CreateTeamDto {
@@ -10,15 +9,17 @@ export class CreateTeamDto {
     @IsString()
     @IsNotEmpty()
     @IsIn(['Soccer','Rescue','OnStage'])
-    liga:string;
+    league:string;
 
     @IsString()
-    disziplin:string;
+    discipline:string;
 
     @IsString()
     @IsNotEmpty()
-    standort:string;
+    @IsMongoId()
+    location: ObjectId;
 
     @IsNotEmpty()
+    @IsMongoId()
     school: ObjectId
 }
