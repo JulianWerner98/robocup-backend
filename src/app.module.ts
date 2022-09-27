@@ -8,8 +8,6 @@ import {Connection, connections} from "mongoose";
 import * as toJson from '@meanie/mongoose-to-json'
 import {APP_GUARD} from "@nestjs/core";
 import { TeamModule } from './team/team.module';
-import { DisciplineModule } from './discipline/discipline.module';
-import { LeagueModule } from './league/league.module';
 import { CoachModule } from './coach/coach.module';
 import { LocationModule } from './location/location.module';
 import { SchoolModule } from './school/school.module';
@@ -45,8 +43,6 @@ import { SchoolModule } from './school/school.module';
         }),
         MemberModule,
         TeamModule,
-        DisciplineModule,
-        LeagueModule,
         CoachModule,
         LocationModule,
         SchoolModule
