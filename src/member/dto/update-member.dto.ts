@@ -1,4 +1,5 @@
-import {IsIn, IsNotEmpty, IsOptional, IsString} from "class-validator";
+import {IsIn, IsMongoId, IsNotEmpty, IsOptional, IsString} from "class-validator";
+import {ObjectId} from "mongodb";
 
 export class UpdateMemberDto {
     @IsOptional()
@@ -17,4 +18,8 @@ export class UpdateMemberDto {
     @IsOptional()
     @IsIn(['Männlich','Weiblich','Diverse'])
     gender?: string;
+
+    @IsOptional()
+    @IsMongoId()
+    team?: ObjectId;
 }
