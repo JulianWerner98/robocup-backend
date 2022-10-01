@@ -11,7 +11,7 @@ export class SchoolService {
 
     async getOrCreate(user: any): Promise<School> {
         const doc: SchoolDocument = await this.schoolModel.findOne({createdBy: user.sub}).exec();
-        if(!doc) {
+        if (!doc) {
             return this.schoolModel.create({createdBy: user.sub});
         }
         return doc;

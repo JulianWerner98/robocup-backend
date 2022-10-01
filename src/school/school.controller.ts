@@ -4,6 +4,7 @@ import {AuthenticatedUser, Roles} from "nest-keycloak-connect";
 import {School} from "./school.schema";
 import {UpdateMemberDto} from "../member/dto";
 import {UpdateSchoolDto} from "./dto";
+import {LocationService} from "../location/location.service";
 
 @Controller({
     version: '1',

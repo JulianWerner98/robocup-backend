@@ -3,6 +3,7 @@ import {CreateMemberDto, UpdateMemberDto} from "./dto";
 import {InjectModel} from "@nestjs/mongoose";
 import {Member, MemberDocument} from "./member.schema";
 import {Model} from "mongoose";
+import {Team} from "../team/team.schema";
 
 @Injectable()
 export class MemberService {
@@ -45,7 +46,16 @@ export class MemberService {
         return this.memberModel.findOneAndDelete({_id: id}).exec();
     }
 
-    findTeamMember(id: string) {
+    async findTeamMember(id: string): Promise<Member[]> {
         return this.memberModel.find({team: id}).exec();
+    }
+
+    async findMemberWithTeam(): Promise<any> {
+        return this.memberModel
+            .find()
+            .populate({path: 'team', model: 'Team', populate: {path: 'school', model: 'School'}})
+            //.populate({path: 'team.school', model: 'School'})
+            .exec()
+
     }
 }

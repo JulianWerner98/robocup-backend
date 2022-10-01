@@ -9,7 +9,7 @@ export class TeamService {
     constructor(@InjectModel(Team.name) private teamModel: Model<TeamDocument>) {
     }
 
-    create(createTeamDto: CreateTeamDto, user: any):Promise<Team> {
+    create(createTeamDto: CreateTeamDto, user: any): Promise<Team> {
         return this.teamModel.create({...createTeamDto, createdBy: user.sub});
     }
 
@@ -43,5 +43,19 @@ export class TeamService {
             throw new NotFoundException();
         }
         return this.teamModel.findOneAndUpdate({_id: id}, updateTeamDto, {new: true});
+    }
+
+    async findSchools(user: any): Promise<any> {
+        let doc = await this.teamModel
+            .find({}).select('school')
+            .populate({path: 'location', model: 'Location'})
+            .populate({path: 'school', model: 'School'}).exec();
+        return doc
+    }
+
+    getMemberCount(id: string): Promise<any> {
+        return this.teamModel
+            .find({school: id})
+            .populate({path: 'location', model: 'Location'}).exec();
     }
 }

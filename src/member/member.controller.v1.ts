@@ -32,6 +32,15 @@ export class MemberControllerV1 {
         return this.memberService.findTeamMember(params.id);
     }
 
+    @Get('institution/:id')
+    @Roles( {roles: ['realm:admin', 'realm:quali']})
+    async getMemberCountByTeamId(@Param() params: FindMemberParamDto): Promise<Member[]> {
+        return this.memberService
+            .findMemberWithTeam()
+            .then(members => members.filter(member => member.team.school.id === params.id))
+            .then(members => members.length);
+    }
+
     @Patch(':id')
     @Roles( {roles: ['realm:admin', 'realm:user']})
     async updateMember(
