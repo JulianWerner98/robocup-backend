@@ -20,4 +20,8 @@ export class SchoolService {
     async updateOne(updateSchoolDto: UpdateSchoolDto, user: any): Promise<School> {
         return this.schoolModel.findOneAndUpdate({createdBy: user.sub}, updateSchoolDto, {new: true});
     }
+
+    getOne(id: string): Promise<School> {
+        return this.schoolModel.findOne({_id: id}).exec()
+    }
 }

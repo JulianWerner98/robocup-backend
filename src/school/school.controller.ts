@@ -1,10 +1,9 @@
-import {Body, Controller, Get, Patch} from '@nestjs/common';
+import {Body, Controller, Get, Param, Patch} from '@nestjs/common';
 import {SchoolService} from "./school.service";
 import {AuthenticatedUser, Roles} from "nest-keycloak-connect";
 import {School} from "./school.schema";
-import {UpdateMemberDto} from "../member/dto";
 import {UpdateSchoolDto} from "./dto";
-import {LocationService} from "../location/location.service";
+import {FindSchoolDto} from "./dto/find-school.dto";
 
 @Controller({
     version: '1',
@@ -18,6 +17,12 @@ export class SchoolController {
     @Roles({roles: ['realm:admin', 'realm:user']})
     async getOrCreate(@AuthenticatedUser() user: any): Promise<School> {
         return this.schoolService.getOrCreate(user);
+    }
+
+    @Get('name/:id')
+    @Roles({roles: ['realm:admin', 'realm:quali']})
+    async getOneById(@Param() params: FindSchoolDto): Promise<School> {
+        return this.schoolService.getOne(params.id);
     }
 
     @Patch()
