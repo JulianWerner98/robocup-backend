@@ -25,6 +25,12 @@ export class SchoolController {
         return this.schoolService.getOne(params.id);
     }
 
+    @Get('all')
+    @Roles({roles: ['realm:admin', 'realm:quali']})
+    async getAll(): Promise<School[]> {
+        return this.schoolService.getAll();
+    }
+
     @Patch()
     @Roles({roles: ['realm:admin', 'realm:user']})
     async updateSchool(@AuthenticatedUser() user: any,

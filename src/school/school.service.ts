@@ -24,4 +24,8 @@ export class SchoolService {
     getOne(id: string): Promise<School> {
         return this.schoolModel.findOne({_id: id}).exec()
     }
+
+    getAll(): Promise<School[]> {
+        return this.schoolModel.find().exec();
+    }
 }
