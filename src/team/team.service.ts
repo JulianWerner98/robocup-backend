@@ -9,7 +9,7 @@ export class TeamService {
     constructor(@InjectModel(Team.name) private teamModel: Model<TeamDocument>) {
     }
 
-    create(createTeamDto: CreateTeamDto, user: any): Promise<Team> {
+    async create(createTeamDto: CreateTeamDto, user: any): Promise<Team> {
         return this.teamModel.create({...createTeamDto, createdBy: user.sub});
     }
 
@@ -21,13 +21,13 @@ export class TeamService {
         return doc;
     }
 
-    findAll(user: any) {
-        if (user.realm_access.roles.includes('admin')) {
+    async findAll(user: any): Promise<Team[]> {
+        if (user.realm_access.roles.includes('admin') || user.realm_access.roles.includes('quali')) {
             return this.teamModel.find().exec();
         } else if (user.realm_access.roles.includes('user')) {
             return this.teamModel.find({createdBy: user.sub}).exec();
         } else {
-            return []
+            return Promise.resolve([])
         }
     }
 
@@ -47,15 +47,22 @@ export class TeamService {
 
     async findSchools(user: any): Promise<any> {
         let doc = await this.teamModel
-            .find({}).select('school')
+            .find().select('school')
             .populate({path: 'location', model: 'Location'})
             .populate({path: 'school', model: 'School'}).exec();
         return doc
     }
 
-    getMemberCount(id: string): Promise<any> {
+    async getMemberCount(id: string): Promise<any> {
         return this.teamModel
             .find({school: id})
             .populate({path: 'location', model: 'Location'}).exec();
+    }
+
+    async findAllFromLocation(): Promise<any> {
+        let doc = await this.teamModel
+            .find()
+            .populate({path: 'location', model: 'Location'}).exec();
+        return doc
     }
 }

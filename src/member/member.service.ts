@@ -53,9 +53,14 @@ export class MemberService {
     async findMemberWithTeam(): Promise<any> {
         return this.memberModel
             .find()
-            .populate({path: 'team', model: 'Team', populate: {path: 'school', model: 'School'}})
-            //.populate({path: 'team.school', model: 'School'})
+            .populate({
+                path: 'team',
+                model: 'Team',
+                populate: [
+                    {path: 'school', model: 'School'},
+                    {path: 'location', model: 'Location'}
+                ]
+            })
             .exec()
-
     }
 }

@@ -3,17 +3,19 @@ import {CoachService} from "./coach.service";
 import {AuthenticatedUser, Roles} from "nest-keycloak-connect";
 import {CreateCoachDto, FindCoachDto, UpdateCoachDto} from "./dto";
 import {Coach} from "./coach.schema";
+import {StaticMethods} from "../shared";
+import {TeamService} from "../team/team.service";
 
 @Controller({
     version: '1',
     path: 'coach'
 })
 export class CoachController {
-    constructor(private coachService: CoachService) {
+    constructor(private coachService: CoachService, private teamService: TeamService) {
     }
 
     @Post()
-    @Roles( {roles: ['realm:admin', 'realm:user']})
+    @Roles({roles: ['realm:admin', 'realm:user']})
     async createCoach(
         @AuthenticatedUser() user: any,
         @Body() createCoachDto: CreateCoachDto): Promise<Coach> {
@@ -21,14 +23,25 @@ export class CoachController {
     }
 
     @Get()
-    @Roles( {roles: ['realm:admin', 'realm:user']})
-    async getMembers(@AuthenticatedUser() user: any): Promise<Coach[]> {
-        console.log(user);
-        return this.coachService.findAll(user);
+    @Roles({roles: ['realm:admin', 'realm:user']})
+    async getCoaches(@AuthenticatedUser() user: any): Promise<Coach[]> {
+        let qualiLocation = StaticMethods.getSearchParam(user);
+        if (qualiLocation) {
+            let schools = []
+            await this.teamService.findAllFromLocation()
+                .then(teams => teams.filter(team => team.location.name === qualiLocation))
+                .then(teams => {
+                    teams.forEach(team => schools.push(team.school));
+                    return this.coachService.findAllWithSchool(schools)
+                })
+            return this.coachService.findAllWithSchool(schools)
+        } else {
+            return this.coachService.findAll(user);
+        }
     }
 
     @Patch(':id')
-    @Roles( {roles: ['realm:admin', 'realm:user']})
+    @Roles({roles: ['realm:admin', 'realm:user']})
     async updateMember(
         @Param() params: FindCoachDto,
         @Body() updateCoachDto: UpdateCoachDto): Promise<Coach> {
@@ -36,7 +49,7 @@ export class CoachController {
     }
 
     @Delete(':id')
-    @Roles( {roles: ['realm:admin', 'realm:user']})
+    @Roles({roles: ['realm:admin', 'realm:user']})
     async deleteMember(@Param() params: FindCoachDto): Promise<Coach> {
         return this.coachService.deleteOne(params.id);
     }

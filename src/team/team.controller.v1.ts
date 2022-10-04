@@ -5,6 +5,7 @@ import {CreateTeamDto, UpdateTeamDto} from "./dto";
 import {Team} from "./team.schema";
 import {FindMemberParamDto} from "../member/dto";
 import {School} from "../school/school.schema";
+import {StaticMethods} from "../shared";
 
 @Controller({
     version: '1',
@@ -25,20 +26,23 @@ export class TeamControllerV1 {
     @Get()
     @Roles({roles: ['realm:admin', 'realm:user']})
     async getAll(@AuthenticatedUser() user: any): Promise<Team[]> {
-        return this.teamService.findAll(user);
+        let doc;
+        let qualiLocation = StaticMethods.getSearchParam(user);
+        if (qualiLocation) {
+            doc = this.teamService.findAllFromLocation()
+                .then((teams) => teams.filter(team => team.location.name === qualiLocation))
+
+        } else {
+            doc = this.teamService.findAll(user)
+        }
+
+        return doc;
     }
 
     @Get('institution')
     @Roles({roles: ['realm:admin', 'realm:quali']})
     async getSchools(@AuthenticatedUser() user: any): Promise<School[]> {
-        let qualiLocation = "";
-        if (user.realm_access.roles.includes('berlin')) qualiLocation = 'Berlin'
-        if (user.realm_access.roles.includes('hamburg')) qualiLocation = 'Hamburg'
-        if (user.realm_access.roles.includes('hannover')) qualiLocation = 'Hannover'
-        if (user.realm_access.roles.includes('kassel')) qualiLocation = 'Kassel'
-        if (user.realm_access.roles.includes('mannheim')) qualiLocation = 'Mannheim'
-        if (user.realm_access.roles.includes('sanktAugustin')) qualiLocation = 'Sankt Augustin'
-        if (user.realm_access.roles.includes('voehringen')) qualiLocation = 'Vöhringen'
+        let qualiLocation = StaticMethods.getSearchParam(user);
 
         let doc = this.teamService.findSchools(user)
             .then((teams) => teams.filter(team => team.location.name === qualiLocation))
@@ -58,14 +62,7 @@ export class TeamControllerV1 {
     @Get('institution/:id')
     @Roles({roles: ['realm:admin', 'realm:quali']})
     async getTeamCount(@AuthenticatedUser() user: any, @Param() params: FindMemberParamDto): Promise<number> {
-        let qualiLocation = "";
-        if (user.realm_access.roles.includes('berlin')) qualiLocation = 'Berlin'
-        if (user.realm_access.roles.includes('hamburg')) qualiLocation = 'Hamburg'
-        if (user.realm_access.roles.includes('hannover')) qualiLocation = 'Hannover'
-        if (user.realm_access.roles.includes('kassel')) qualiLocation = 'Kassel'
-        if (user.realm_access.roles.includes('mannheim')) qualiLocation = 'Mannheim'
-        if (user.realm_access.roles.includes('sanktAugustin')) qualiLocation = 'Sankt Augustin'
-        if (user.realm_access.roles.includes('voehringen')) qualiLocation = 'Vöhringen'
+        let qualiLocation = StaticMethods.getSearchParam(user);
 
         return this.teamService.getMemberCount(params.id)
             .then((teams) => teams.filter(team => team.location.name === qualiLocation))

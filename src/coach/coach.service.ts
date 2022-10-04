@@ -3,6 +3,7 @@ import {InjectModel} from "@nestjs/mongoose";
 import {Model} from "mongoose";
 import {Coach, CoachDocument} from "./coach.schema";
 import {CreateCoachDto, UpdateCoachDto} from "./dto";
+import {ObjectId} from "mongodb";
 
 @Injectable()
 export class CoachService {
@@ -44,5 +45,9 @@ export class CoachService {
             throw new NotFoundException();
         }
         return this.coachModel.findOneAndDelete({_id: id}).exec();
+    }
+
+    async findAllWithSchool(ids: ObjectId[]): Promise<Coach[]> {
+        return this.coachModel.find({school: {"$in": ids}}).exec();
     }
 }
