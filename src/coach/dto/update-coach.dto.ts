@@ -15,6 +15,11 @@ export class UpdateCoachDto {
     @IsNotEmpty()
     mail: string;
 
+    @IsOptional()
+    @IsString()
+    @IsNotEmpty()
+    phoneNumber: string;
+
     @IsNotEmpty()
     school: ObjectId
 }

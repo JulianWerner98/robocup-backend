@@ -12,6 +12,9 @@ export class Coach {
     @Prop()
     mail: string;
 
+    @Prop()
+    phoneNumber: string;
+
     @Prop({ type: SchemaMongoose.Types.ObjectId })
     school: { type: SchemaMongoose.Types.ObjectId, ref: 'School' };
 
