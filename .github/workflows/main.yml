@@ -6,9 +6,7 @@ name: CI
 on:
   # Triggers the workflow on push or pull request events but only for the "master" branch
   push:
-    branches: [ "master", "dev" ]
-  pull_request:
-    branches: [ "master" ]
+    branches: [ "master"]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -35,7 +33,11 @@ jobs:
           docker login -u julianwerner  --password-stdin <<< ${{ secrets.DOCKERHUB_TOKEN }}
           docker build -t julianwerner/robocup-backend .
           echo "Finish building"
-          docker push julianwerner/robocup-backend 
+          docker push julianwerner/robocup-backend
+      - name: Deploy docker container webhook
+        uses: joelwmale/webhook-action@master
+        env:
+          WEBHOOK_URL: ${{ secrets.DEPLOY_WEBHOOK_URL  }}
             
           
     
