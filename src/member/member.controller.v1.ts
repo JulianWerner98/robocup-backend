@@ -46,7 +46,7 @@ export class MemberControllerV1 {
         let qualiLocation = StaticMethods.getSearchParam(user)
         return this.memberService
             .findMemberWithTeam()
-            .then(members => members.filter(member => member.team.location.name === qualiLocation))
+            .then(members => members.filter(member => member.team && member.team.location.name === qualiLocation))
             .then(members => members.filter(member => member.team.school.id === params.id))
             .then(members => members.length);
     }
