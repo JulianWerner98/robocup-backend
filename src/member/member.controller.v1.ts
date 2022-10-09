@@ -28,8 +28,7 @@ export class MemberControllerV1 {
         let qualiLocation = StaticMethods.getSearchParam(user);
         if (qualiLocation) {
             return this.memberService.findMemberWithTeam()
-                .then(members => members.filter(member => member.team.location.name === qualiLocation));
-
+                .then(members => members.filter(member => member.team && member.team.location.name === qualiLocation));
         } else {
             return this.memberService.findAll(user);
         }
