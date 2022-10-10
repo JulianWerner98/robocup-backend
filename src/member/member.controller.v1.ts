@@ -34,6 +34,13 @@ export class MemberControllerV1 {
         }
     }
 
+    @Get('count')
+    @Roles({roles: ['realm:admin', 'realm:user']})
+    async getMemberCountByUser(@AuthenticatedUser() user: any): Promise<number> {
+        return this.memberService.findAll(user)
+            .then(members => members.length);
+    }
+
     @Get(':id')
     @Roles({roles: ['realm:admin', 'realm:user']})
     async getTeamMembers(@Param() params: FindMemberParamDto): Promise<Member> {

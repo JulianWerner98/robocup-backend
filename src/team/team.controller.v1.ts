@@ -39,6 +39,25 @@ export class TeamControllerV1 {
         return doc;
     }
 
+    @Get('overview')
+    @Roles({roles: ['realm:admin', 'realm:user']})
+    async getOverview(@AuthenticatedUser() user: any): Promise<any> {
+        return this.teamService.findAll(user)
+            .then(teams => {
+                let disciplines: string[] = []
+                let teamNames: string[] = []
+                teams.forEach(team => {
+                    if(!disciplines.includes(team.discipline)) disciplines.push(team.discipline);
+                    teamNames.push(team.name)
+                })
+                return {
+                    teamCount: teams.length,
+                    teams: teamNames.sort(),
+                    disciplines: disciplines.sort()
+                }
+            })
+    }
+
     @Get('institution')
     @Roles({roles: ['realm:admin', 'realm:quali']})
     async getSchools(@AuthenticatedUser() user: any): Promise<School[]> {
