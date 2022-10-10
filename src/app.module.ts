@@ -11,6 +11,7 @@ import { TeamModule } from './team/team.module';
 import { CoachModule } from './coach/coach.module';
 import { LocationModule } from './location/location.module';
 import { SchoolModule } from './school/school.module';
+import {DocumentModule} from "./document";
 
 @Module({
     imports: [
@@ -45,7 +46,8 @@ import { SchoolModule } from './school/school.module';
         TeamModule,
         CoachModule,
         LocationModule,
-        SchoolModule
+        SchoolModule,
+        DocumentModule
     ],
     providers: [
         {

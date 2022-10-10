@@ -1,41 +1,45 @@
 import {Injectable, NotFoundException} from "@nestjs/common";
-import {GridFSBucket, GridFSFile, GridFSBucketReadStream, ObjectId} from "mongodb";
+import {GridFSBucket, GridFSBucketReadStream, GridFSFile, ObjectId} from "mongodb";
 import {InjectConnection} from "@nestjs/mongoose";
-import {Connection, Schema} from "mongoose";
+import {Connection} from "mongoose";
 
 @Injectable()
-export class PhotoService {
+export class DocumentService {
     private fileModel: GridFSBucket
 
     constructor(@InjectConnection() private connection: Connection) {
         this.fileModel = new GridFSBucket(connection.db);
     }
 
-    async findPhotosFromMember(id: string): Promise<GridFSFile[]> {
+    async findDocuments(type: string, id: string): Promise<GridFSFile[]> {
         return this.fileModel.find({
-            metadata: {memberId: id}
+            metadata: {id: id, type: type}
         }).toArray();
     }
 
-    async findPhoto(id: string, pid: string): Promise<GridFSBucketReadStream> {
+    async findDocument(type:string, id: string, pid: string): Promise<GridFSBucketReadStream> {
         const doc = await this.fileModel.find({
             _id: new ObjectId(pid),
         }).tryNext();
         if (!doc ||
-            !(doc.metadata as any).memberId ||
-            (doc.metadata as any).memberId !== id) {
+            !(doc.metadata as any).id ||
+            !(doc.metadata as any).type ||
+            (doc.metadata as any).id !== id ||
+            (doc.metadata as any).type !== type) {
             throw new NotFoundException();
         }
         return this.fileModel.openDownloadStream(doc._id);
     }
 
-    async deletePhoto(id: string, pid: string):Promise<GridFSFile> {
+    async deleteDocument(type: string, id: string, pid: string):Promise<GridFSFile> {
         const doc = await this.fileModel.find({
             _id: new ObjectId(pid),
         }).tryNext();
         if (!doc ||
-            !(doc.metadata as any).memberId ||
-            (doc.metadata as any).memberId !== id) {
+            !(doc.metadata as any).id ||
+            !(doc.metadata as any).type ||
+            (doc.metadata as any).id !== id ||
+            (doc.metadata as any).type !== type) {
             throw new NotFoundException();
         }
         await this.fileModel.delete(doc._id);

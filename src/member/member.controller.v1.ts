@@ -36,8 +36,8 @@ export class MemberControllerV1 {
 
     @Get(':id')
     @Roles({roles: ['realm:admin', 'realm:user']})
-    async getTeamMembers(@Param() params: FindMemberParamDto): Promise<Member[]> {
-        return this.memberService.findTeamMember(params.id);
+    async getTeamMembers(@Param() params: FindMemberParamDto): Promise<Member> {
+        return this.memberService.findOne(params.id);
     }
 
     @Get('institution/:id')

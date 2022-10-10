@@ -40,9 +40,16 @@ export class CoachController {
         }
     }
 
+    @Get(':id')
+    @Roles({roles: ['realm:admin', 'realm:user']})
+    async getCoach(
+        @Param() params: FindCoachDto): Promise<Coach> {
+        return this.coachService.findOne(params.id,);
+    }
+
     @Patch(':id')
     @Roles({roles: ['realm:admin', 'realm:user']})
-    async updateMember(
+    async updateCoach(
         @Param() params: FindCoachDto,
         @Body() updateCoachDto: UpdateCoachDto): Promise<Coach> {
         return this.coachService.updateOne(params.id, updateCoachDto);
@@ -50,7 +57,7 @@ export class CoachController {
 
     @Delete(':id')
     @Roles({roles: ['realm:admin', 'realm:user']})
-    async deleteMember(@Param() params: FindCoachDto): Promise<Coach> {
+    async deleteCoach(@Param() params: FindCoachDto): Promise<Coach> {
         return this.coachService.deleteOne(params.id);
     }
 }

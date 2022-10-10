@@ -1,6 +1,6 @@
 import {Module} from "@nestjs/common";
-import {PhotoControllerV1} from "./photo.controller.v1";
-import {PhotoService} from "./photo.service";
+import {DocumentControllerV1} from "./document.controller.v1";
+import {DocumentService} from "./document.service";
 import {MulterModule} from "@nestjs/platform-express";
 import {ConfigService} from "@nestjs/config";
 import {GridFsStorage} from "multer-gridfs-storage";
@@ -18,7 +18,8 @@ import {GridFsStorage} from "multer-gridfs-storage";
                                 fileInfos = {
                                     filename: file.originalname.trim(),
                                     metadata: {
-                                        memberId: req.params.id
+                                        id: req.params.id,
+                                        type: req.params.type
                                     }
                                 }
                             } catch (error) {
@@ -32,9 +33,9 @@ import {GridFsStorage} from "multer-gridfs-storage";
             inject: [ConfigService]
         })
     ],
-    controllers: [PhotoControllerV1] ,
-    providers: [PhotoService]
+    controllers: [DocumentControllerV1],
+    providers: [DocumentService]
 })
-export class PhotoModule {
+export class DocumentModule {
 
 }
