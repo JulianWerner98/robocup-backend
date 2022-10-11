@@ -53,7 +53,13 @@ export class MemberControllerV1 {
         let qualiLocation = StaticMethods.getSearchParam(user)
         return this.memberService
             .findMemberWithTeam()
-            .then(members => members.filter(member => member.team && member.team.location.name === qualiLocation))
+            .then(members =>  {
+                if(!user.realm_access.roles.includes('admin')){
+                    return members.filter(member =>member.team && member.team.location.name === qualiLocation)
+                } else {
+                    return members.filter(member =>member.team)
+                }
+            })
             .then(members => members.filter(member => member.team.school.id === params.id))
             .then(members => members.length);
     }
@@ -61,8 +67,6 @@ export class MemberControllerV1 {
     @Get('teamCount/:id')
     @Roles({roles: ['realm:admin', 'realm:quali']})
     async getMemberCountByTeamId(@AuthenticatedUser() user: any, @Param() params: FindMemberParamDto): Promise<number> {
-        let qualiLocation = StaticMethods.getSearchParam(user);
-
         return this.memberService
             .findTeamMember(params.id)
             .then(members => members.length);

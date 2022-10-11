@@ -53,7 +53,7 @@ export class TeamService {
         return doc
     }
 
-    async getMemberCount(id: string): Promise<any> {
+    async getTeamCount(id: string): Promise<any> {
         return this.teamModel
             .find({school: id})
             .populate({path: 'location', model: 'Location'}).exec();

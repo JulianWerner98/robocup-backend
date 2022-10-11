@@ -65,7 +65,13 @@ export class TeamControllerV1 {
         let qualiLocation = StaticMethods.getSearchParam(user);
 
         let doc = this.teamService.findSchools(user)
-            .then((teams) => teams.filter(team => team.location.name === qualiLocation))
+            .then((teams) => {
+                if(!user.realm_access.roles.includes('admin')){
+                    return teams.filter(team => team.location.name === qualiLocation)
+                } else {
+                    return  teams;
+                }
+            })
             .then((teams) => teams.map((team => team.school)))
             .then((institutions) => {
                 let result: School[] = [];
@@ -84,9 +90,15 @@ export class TeamControllerV1 {
     async getTeamCount(@AuthenticatedUser() user: any, @Param() params: FindMemberParamDto): Promise<number> {
         let qualiLocation = StaticMethods.getSearchParam(user);
 
-        return this.teamService.getMemberCount(params.id)
-            .then((teams) => teams.filter(team => team.location.name === qualiLocation))
-            .then((teams) => teams.length);
+        return this.teamService.getTeamCount(params.id)
+            .then((teams) => {
+                if(!user.realm_access.roles.includes('admin')){
+                    return teams.filter(team => team.location.name === qualiLocation)
+                } else {
+                    return  teams;
+                }
+            })
+            .then(teams => teams.length);
     }
 
     @Get(':id')
