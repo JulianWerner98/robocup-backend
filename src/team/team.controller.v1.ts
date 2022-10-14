@@ -45,15 +45,13 @@ export class TeamControllerV1 {
         return this.teamService.findAll(user)
             .then(teams => {
                 let disciplines: string[] = []
-                let teamNames: string[] = []
                 teams.forEach(team => {
                     if(!disciplines.includes(team.discipline)) disciplines.push(team.discipline);
                     if(team.league === 'OnStage' && !disciplines.includes(team.league)) disciplines.push(team.league);
-                    teamNames.push(team.name)
                 })
                 return {
                     teamCount: teams.length,
-                    teams: teamNames.sort(),
+                    teams: teams,
                     disciplines: disciplines.sort()
                 }
             })
