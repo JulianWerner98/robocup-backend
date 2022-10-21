@@ -2,9 +2,7 @@ import {Prop, Schema, SchemaFactory} from "@nestjs/mongoose";
 
 @Schema()
 export class School {
-    @Prop()
-    name: string;
-
+    //Person
     @Prop()
     contactFirstname: string;
 
@@ -13,6 +11,10 @@ export class School {
 
     @Prop()
     email: string;
+
+    //Institution
+    @Prop()
+    name: string;
 
     @Prop()
     street: string;
@@ -26,6 +28,23 @@ export class School {
     @Prop()
     city: string;
 
+    //Billing Address
+    @Prop()
+    billingName: string;
+
+    @Prop()
+    billingStreet: string;
+
+    @Prop()
+    billingNumber: string;
+
+    @Prop()
+    billingPostcode: string;
+
+    @Prop()
+    billingCity: string;
+
+    //Meta
     @Prop()
     createdBy: string;
 }

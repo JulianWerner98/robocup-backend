@@ -1,11 +1,7 @@
-import {IS_EMAIL, IsEmail, IsNotEmpty, IsString} from "class-validator";
+import {IS_EMAIL, IsEmail, IsNotEmpty, IsOptional, IsString} from "class-validator";
 
 export class CreateSchoolDto {
-
-    @IsString()
-    @IsNotEmpty()
-    name: string
-
+//Person
     @IsString()
     @IsNotEmpty()
     contactFirstname: string
@@ -16,8 +12,12 @@ export class CreateSchoolDto {
 
     @IsString()
     @IsNotEmpty()
-    @IsEmail()
     email: string
+
+    //Institution
+    @IsString()
+    @IsNotEmpty()
+    name: string
 
     @IsString()
     @IsNotEmpty()
@@ -34,4 +34,20 @@ export class CreateSchoolDto {
     @IsString()
     @IsNotEmpty()
     city: string
+
+    //Billing Address
+    @IsOptional()
+    billingName: string
+
+    @IsOptional()
+    billingStreet: string
+
+    @IsOptional()
+    billingNumber: string
+
+    @IsOptional()
+    billingPostcode: string
+
+    @IsOptional()
+    billingCity: string
 }
