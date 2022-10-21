@@ -26,6 +26,21 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
+## Preperation local Docker Dump
+
+Setup ```.env```-file in repo.
+
+```bash
+# run to install docker container
+docker run --name mongodb -d -p 27017:27017 mongo
+
+# show current running docker container id
+$ docker ps
+
+# Copy <ID> and import <Name>.dump
+docker exec -i <ID> sh -c 'mongorestore --archive' < <Name>.dump
+```
+
 ## Installation
 
 ```bash
@@ -38,24 +53,14 @@ $ npm install
 # development
 $ npm run start
 
+# local
+$ npm run start:local
+
 # watch mode
 $ npm run start:dev
 
 # production mode
 $ npm run start:prod
-```
-
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
 
 ## Support
