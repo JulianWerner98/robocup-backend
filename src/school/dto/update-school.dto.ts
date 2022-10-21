@@ -1,11 +1,8 @@
-import {IsNotEmpty, IsString} from "class-validator";
+import {IsNotEmpty, IsOptional, IsString} from "class-validator";
 
 export class UpdateSchoolDto {
 
-    @IsString()
-    @IsNotEmpty()
-    name: string
-
+    //Person
     @IsString()
     @IsNotEmpty()
     contactFirstname: string
@@ -17,6 +14,11 @@ export class UpdateSchoolDto {
     @IsString()
     @IsNotEmpty()
     email: string
+
+    //Institution
+    @IsString()
+    @IsNotEmpty()
+    name: string
 
     @IsString()
     @IsNotEmpty()
@@ -33,4 +35,20 @@ export class UpdateSchoolDto {
     @IsString()
     @IsNotEmpty()
     city: string
+
+    //Billing Address
+    @IsOptional()
+    billingName: string
+
+    @IsOptional()
+    billingStreet: string
+
+    @IsOptional()
+    billingNumber: string
+
+    @IsOptional()
+    billingPostcode: string
+
+    @IsOptional()
+    billingCity: string
 }
