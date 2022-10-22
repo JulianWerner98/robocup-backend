@@ -22,18 +22,6 @@ export class MemberControllerV1 {
         return this.memberService.create(createMemberDto, user);
     }
 
-    @Get()
-    @Roles({roles: ['realm:admin', 'realm:user']})
-    async getMembers(@AuthenticatedUser() user: any): Promise<Member[]> {
-        let qualiLocation = StaticMethods.getSearchParam(user);
-        if (qualiLocation) {
-            return this.memberService.findMemberWithTeam()
-                .then(members => members.filter(member => member.team && member.team.location.name === qualiLocation));
-        } else {
-            return this.memberService.findAll(user);
-        }
-    }
-
     @Get('count')
     @Roles({roles: ['realm:admin', 'realm:user']})
     async getMemberCountByUser(@AuthenticatedUser() user: any): Promise<number> {
@@ -41,11 +29,6 @@ export class MemberControllerV1 {
             .then(members => members.length);
     }
 
-    @Get(':id')
-    @Roles({roles: ['realm:admin', 'realm:user']})
-    async getTeamMembers(@Param() params: FindMemberParamDto): Promise<Member> {
-        return this.memberService.findOne(params.id);
-    }
 
     @Get('institution/:id')
     @Roles({roles: ['realm:admin', 'realm:quali']})
@@ -53,11 +36,11 @@ export class MemberControllerV1 {
         let qualiLocation = StaticMethods.getSearchParam(user)
         return this.memberService
             .findMemberWithTeam()
-            .then(members =>  {
-                if(!user.realm_access.roles.includes('admin')){
-                    return members.filter(member =>member.team && member.team.location.name === qualiLocation)
+            .then(members => {
+                if (!user.realm_access.roles.includes('admin')) {
+                    return members.filter(member => member.team && member.team.location.name === qualiLocation)
                 } else {
-                    return members.filter(member =>member.team)
+                    return members.filter(member => member.team)
                 }
             })
             .then(members => members.filter(member => member.team.school.id === params.id))
@@ -72,6 +55,37 @@ export class MemberControllerV1 {
             .then(members => members.length);
     }
 
+    @Get('gender')
+    @Roles({roles: ['realm:admin', 'realm:user']})
+    async getGenderCount(@AuthenticatedUser() user: any): Promise<number[]> {
+        return this.memberService.findAll(user)
+            .then(members => {
+                return [
+                    members.filter(member => member.gender === 'Männlich').length,
+                    members.filter(member => member.gender === 'Weiblich').length,
+                    members.filter(member => member.gender === 'Diverse').length
+                ];
+            });
+    }
+
+    @Get(':id')
+    @Roles({roles: ['realm:admin', 'realm:user']})
+    async getTeamMembers(@Param() params: FindMemberParamDto): Promise<Member> {
+        return this.memberService.findOne(params.id);
+    }
+
+    @Get()
+    @Roles({roles: ['realm:admin', 'realm:user']})
+    async getMembers(@AuthenticatedUser() user: any): Promise<Member[]> {
+        let qualiLocation = StaticMethods.getSearchParam(user);
+        if (qualiLocation) {
+            return this.memberService.findMemberWithTeam()
+                .then(members => members.filter(member => member.team && member.team.location.name === qualiLocation));
+        } else {
+            return this.memberService.findAll(user);
+        }
+    }
+
     @Patch(':id')
     @Roles({roles: ['realm:admin', 'realm:user']})
     async updateMember(
@@ -79,6 +93,7 @@ export class MemberControllerV1 {
         @Body() updateMemberDto: UpdateMemberDto): Promise<Member> {
         return this.memberService.updateOne(params.id, updateMemberDto);
     }
+
 
     @Delete(':id')
     @Roles({roles: ['realm:admin', 'realm:user']})
