@@ -3,6 +3,7 @@ import {CreateTeamDto, UpdateTeamDto} from "./dto";
 import {InjectModel} from "@nestjs/mongoose";
 import {Model} from "mongoose";
 import {Team, TeamDocument} from "./team.schema";
+import {StaticMethods} from "../shared";
 
 @Injectable()
 export class TeamService {
@@ -22,8 +23,14 @@ export class TeamService {
     }
 
     async findAll(user: any): Promise<Team[]> {
-        if (user.realm_access.roles.includes('admin') || user.realm_access.roles.includes('quali')) {
+        if (user.realm_access.roles.includes('admin')) {
             return this.teamModel.find().exec();
+        } else if (user.realm_access.roles.includes('quali')) {
+            return this.teamModel
+                .find()
+                .populate({path: 'location', model: 'Location'})
+                .exec()
+                .then(teams => teams.filter((team: any) => team.location.name === StaticMethods.getSearchParam(user)));
         } else if (user.realm_access.roles.includes('user')) {
             return this.teamModel.find({createdBy: user.sub}).exec();
         } else {

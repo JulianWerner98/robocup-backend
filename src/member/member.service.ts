@@ -4,6 +4,7 @@ import {InjectModel} from "@nestjs/mongoose";
 import {Member, MemberDocument} from "./member.schema";
 import {Model} from "mongoose";
 import {Team} from "../team/team.schema";
+import {StaticMethods} from "../shared";
 
 @Injectable()
 export class MemberService {
@@ -17,6 +18,18 @@ export class MemberService {
     async findAll(user: any): Promise<Member[]> {
         if (user.realm_access.roles.includes('admin')) {
             return this.memberModel.find().exec();
+        } else if (user.realm_access.roles.includes('quali')) {
+            return this.memberModel
+                .find()
+                .populate({
+                    path: 'team',
+                    model: 'Team',
+                    populate: [
+                        {path: 'location', model: 'Location'}
+                    ]
+                })
+                .exec()
+                .then(members => members.filter((member: any) => member.team.location.name === StaticMethods.getSearchParam(user)));
         } else if (user.realm_access.roles.includes('user')) {
             return this.memberModel.find({createdBy: user.sub}).exec();
         } else {
@@ -50,7 +63,7 @@ export class MemberService {
         return this.memberModel.find({team: id}).exec();
     }
 
-    async findMemberWithTeam(): Promise<any> {
+    async findMemberWithTeamAndSchoolAndLocation(): Promise<any> {
         return this.memberModel
             .find()
             .populate({

@@ -35,7 +35,7 @@ export class MemberControllerV1 {
     async getMemberCountBySchoolId(@AuthenticatedUser() user: any, @Param() params: FindMemberParamDto): Promise<number> {
         let qualiLocation = StaticMethods.getSearchParam(user)
         return this.memberService
-            .findMemberWithTeam()
+            .findMemberWithTeamAndSchoolAndLocation()
             .then(members => {
                 if (!user.realm_access.roles.includes('admin')) {
                     return members.filter(member => member.team && member.team.location.name === qualiLocation)
@@ -79,8 +79,8 @@ export class MemberControllerV1 {
     async getMembers(@AuthenticatedUser() user: any): Promise<Member[]> {
         let qualiLocation = StaticMethods.getSearchParam(user);
         if (qualiLocation) {
-            return this.memberService.findMemberWithTeam()
-                .then(members => members.filter(member => member.team && member.team.location.name === qualiLocation));
+            return this.memberService.findMemberWithTeamAndSchoolAndLocation()
+                .then(members => members.filter(member => member.team && member.team.location.name === qualiLocation))
         } else {
             return this.memberService.findAll(user);
         }
