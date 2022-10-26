@@ -23,22 +23,6 @@ export class TeamControllerV1 {
         return this.teamService.create(createTeamDto, user);
     }
 
-    @Get()
-    @Roles({roles: ['realm:admin', 'realm:user']})
-    async getAll(@AuthenticatedUser() user: any): Promise<Team[]> {
-        let doc;
-        let qualiLocation = StaticMethods.getSearchParam(user);
-        if (qualiLocation) {
-            doc = this.teamService.findAllFromLocation()
-                .then((teams) => teams.filter(team => team.location.name === qualiLocation))
-
-        } else {
-            doc = this.teamService.findAll(user)
-        }
-
-        return doc;
-    }
-
     @Get('overview')
     @Roles({roles: ['realm:admin', 'realm:user']})
     async getOverview(@AuthenticatedUser() user: any): Promise<any> {
@@ -46,8 +30,8 @@ export class TeamControllerV1 {
             .then(teams => {
                 let disciplines: string[] = []
                 teams.forEach(team => {
-                    if(!disciplines.includes(team.discipline)) disciplines.push(team.discipline);
-                    if(team.league === 'OnStage' && !disciplines.includes(team.league)) disciplines.push(team.league);
+                    if (!disciplines.includes(team.discipline)) disciplines.push(team.discipline);
+                    if (team.league === 'OnStage' && !disciplines.includes(team.league)) disciplines.push(team.league);
                 })
                 return {
                     teamCount: teams.length,
@@ -64,10 +48,10 @@ export class TeamControllerV1 {
 
         let doc = this.teamService.findSchools(user)
             .then((teams) => {
-                if(!user.realm_access.roles.includes('admin')){
+                if (!user.realm_access.roles.includes('admin')) {
                     return teams.filter(team => team.location.name === qualiLocation)
                 } else {
-                    return  teams;
+                    return teams;
                 }
             })
             .then((teams) => teams.map((team => team.school)))
@@ -90,10 +74,10 @@ export class TeamControllerV1 {
 
         return this.teamService.getTeamCount(params.id)
             .then((teams) => {
-                if(!user.realm_access.roles.includes('admin')){
+                if (!user.realm_access.roles.includes('admin')) {
                     return teams.filter(team => team.location.name === qualiLocation)
                 } else {
-                    return  teams;
+                    return teams;
                 }
             })
             .then(teams => teams.length);
@@ -103,6 +87,22 @@ export class TeamControllerV1 {
     @Roles({roles: ['realm:admin', 'realm:user']})
     async getOne(@Param() params: FindMemberParamDto): Promise<Team> {
         return this.teamService.findOne(params.id);
+    }
+
+    @Get()
+    @Roles({roles: ['realm:admin', 'realm:user']})
+    async getAll(@AuthenticatedUser() user: any): Promise<Team[]> {
+        let doc;
+        let qualiLocation = StaticMethods.getSearchParam(user);
+        if (qualiLocation) {
+            doc = this.teamService.findAllFromLocation()
+                .then((teams) => teams.filter(team => team.location.name === qualiLocation))
+
+        } else {
+            doc = this.teamService.findAll(user)
+        }
+
+        return doc;
     }
 
     @Delete(':id')
